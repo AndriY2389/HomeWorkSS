@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Program:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="Program.jar">
+      <element id="module-output" name="Program" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../commons-codec-1.11/commons-codec-1.11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../commons-codec-1.11/commons-codec-1.11-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../commons-codec-1.11/commons-codec-1.11-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../commons-codec-1.11/commons-codec-1.11-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../commons-codec-1.11/commons-codec-1.11-test-sources.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
