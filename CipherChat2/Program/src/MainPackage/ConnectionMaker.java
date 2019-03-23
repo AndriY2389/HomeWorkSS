@@ -7,8 +7,8 @@ import java.nio.charset.Charset;
 public class ConnectionMaker {
 
     private final Socket socket;
-    private final Thread rxThread;  // потік, який слухає вхідне з'єднання і в разі отримання повідомлення генерує подію
-    private final ConnectionMakerInterface connectionMakerInterface;  //той хто слухає подіїї
+    private final Thread rxThread;
+    private final ConnectionMakerInterface connectionMakerInterface;
     private final BufferedReader in;
     private final BufferedWriter out;
 
@@ -16,7 +16,7 @@ public class ConnectionMaker {
         this(connectionMakerInterface, new Socket(ipAddress, port));
     }
 
-    public ConnectionMaker(ConnectionMakerInterface connectionMakerInterface, Socket socket) throws IOException {  //приймає сокет (готове з'єднання) і зробить з ним з'єднання
+    public ConnectionMaker(ConnectionMakerInterface connectionMakerInterface, Socket socket) throws IOException {
         this.connectionMakerInterface = connectionMakerInterface;
         this.socket = socket;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream(), Charset.forName("UTF-8")));
@@ -27,32 +27,32 @@ public class ConnectionMaker {
                 try {
                     connectionMakerInterface.connectionReady(ConnectionMaker.this);
                     while (!rxThread.isInterrupted()) {
-                        connectionMakerInterface.receiveMessage(ConnectionMaker.this, in.readLine());  //отримуємо рядок і відправляємо до connectionMakerInterface
+                        connectionMakerInterface.receiveMessage(ConnectionMaker.this, in.readLine());
                     }
                 } catch (IOException e) {
                     connectionMakerInterface.somethingWithConnection(ConnectionMaker.this, e);
                 }finally {
-                    connectionMakerInterface.disconnection(ConnectionMaker.this);  //стався дісконект
+                    connectionMakerInterface.disconnection(ConnectionMaker.this);
                 }
             }
         };
-        rxThread.start();  //запускаємо потік
+        rxThread.start();
     }
 
-    public synchronized void sendString(String valve) {  //відправити рядок
+    public synchronized void sendString(String valve) {
         try {
-            out.write(valve+"\r\n");  //написати в потік виводу (в буфер)ю "\r\n" щоб перевести на новий рядок на клієнті
-            out.flush();  //скинути буфер і надіслати
+            out.write(valve+"\r\n");
+            out.flush();
         } catch (IOException e) {
             connectionMakerInterface.somethingWithConnection(ConnectionMaker.this, e);
-            disconnect();  //роз'єднати
+            disconnect();
         }
     }
 
     public synchronized void disconnect() {
-        rxThread.interrupt();  //перервати з'єднання
+        rxThread.interrupt();
         try {
-            socket.close();  //закрити сокет
+            socket.close();
         } catch (IOException e) {
             connectionMakerInterface.somethingWithConnection(ConnectionMaker.this, e);
         }
